@@ -107,6 +107,7 @@ minecraft {
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 repositories {
+    mavenCentral()
     maven {
         url = "https://www.cursemaven.com"
     }
@@ -224,6 +225,7 @@ dependencies {
 
     //Impactor Economy Compat
     //Have to get the jar from modrinth as the example maven from their page & github fails to find the net.kyori.* jar-in-jar requirements
+    implementation("net.kyori:adventure-api:4.22.0")
     compileOnly(fg.deobf("maven.modrinth:impactor:5.2.7+1.20.1-Forge"))
     //Manually extracted the jar-in-jar libraries from impactor so that they can be loaded properly
     compileOnly(fg.deobf(fileTree("libs"){ include "*.jar"}))
