@@ -178,18 +178,16 @@ public final class SlotMachineEntry {
                         default:
                             rewardCount = 0; // 不符合规则，不给予奖励
                     }
-                    // 获取 this.items 中每种物品的相应数量
-                    int stackSize = this.items.stream()
-                            .filter(stack -> stack.getItem().equals(item))
-                            .mapToInt(ItemStack::getCount)
-                            .sum();
-
-                    // 创建与 this.items 对应数量的物品奖励堆栈
-                    ItemStack rewardStack = new ItemStack(item, stackSize);
+                    // 假设 rewardCount 已经作为入参或在作用域中定义
                     for (int i = 0; i < rewardCount; i++) {
-                        if (!context.putItem(rewardStack)) { // 如果无法放入玩家物品栏
-                            context.collectItem(rewardStack); // 收集物品，防止玩家因物品栏满而丢失
-                            return false;
+                        // 遍历 this.items，为每种物品创建数量一致的 rewardStack
+                        for (ItemStack originalStack : this.items) {
+                            // 拷贝每种物品及数量，确保类型与数量一致
+                            ItemStack rewardStack = new ItemStack(originalStack.getItem(), originalStack.getCount());
+                            if (!context.putItem(rewardStack)) {
+                                context.collectItem(rewardStack);
+                                return false;
+                            }
                         }
                     }
                 }
